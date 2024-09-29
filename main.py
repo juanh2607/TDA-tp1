@@ -1,3 +1,5 @@
+import sys
+
 DIR_PRUEBAS = "Pruebas/"
 
 
@@ -34,37 +36,31 @@ def ganar_siempre(monedas):
 
 
 def main():
-    pruebas = [
-        "20.txt",
-        "25.txt",
-        "50.txt",
-        "100.txt",
-        "1000.txt",
-        "10000.txt",
-        "20000.txt",
-    ]
+    if len(sys.argv) > 1:
+        nombre_archivo = sys.argv[1]
+    else:
+        nombre_archivo = input("Por favor ingrese el nombre de su set de datos: ")
 
-    for prueba in pruebas:
-        with open(DIR_PRUEBAS + prueba) as archivo_prueba:
-            archivo_prueba.readline()
-            monedas = [int(moneda) for moneda in archivo_prueba.readline().split(";")]
-            puntaje_sophia, puntaje_mateo = ganar_siempre(monedas)
+    with open(DIR_PRUEBAS + nombre_archivo) as archivo:
+        archivo.readline()
+        monedas = [int(moneda) for moneda in archivo.readline().split(";")]
+        puntaje_sophia, puntaje_mateo = ganar_siempre(monedas)
 
-            print(f"\n--- {prueba} ---")
-            print(f"Total monedas: {sum(monedas)}")
-            print(f"Puntaje Sophia: {puntaje_sophia} - Puntaje Mateo: {puntaje_mateo}")
+        print(f"\n--- {nombre_archivo} ---")
+        print(f"Total monedas: {sum(monedas)}")
+        print(f"Puntaje Sophia: {puntaje_sophia} - Puntaje Mateo: {puntaje_mateo}")
 
-            # Comparar ganancia de Sophia
-            total_monedas = sum(monedas)
-            assert (
-                puntaje_sophia + puntaje_mateo == total_monedas
-            ), f"Error en {prueba}: la suma de puntajes ({puntaje_sophia + puntaje_mateo}) no coincide con el total de las monedas ({total_monedas})."
+        # Comparar ganancia de Sophia
+        total_monedas = sum(monedas)
+        assert (
+            puntaje_sophia + puntaje_mateo == total_monedas
+        ), f"Error en {nombre_archivo}: la suma de puntajes ({puntaje_sophia + puntaje_mateo}) no coincide con el total de las monedas ({total_monedas})."
 
-            assert (
-                puntaje_sophia >= puntaje_mateo
-            ), f"Error en {prueba}: Puntaje de Sophia ({puntaje_sophia}) es menor que el de Mateo ({puntaje_mateo})."
+        assert (
+            puntaje_sophia >= puntaje_mateo
+        ), f"Error en {nombre_archivo}: Puntaje de Sophia ({puntaje_sophia}) es menor que el de Mateo ({puntaje_mateo})."
 
-            print(f"Prueba {prueba} exitosa.")
+        print(f"Prueba {nombre_archivo} exitosa.")
 
 
 if __name__ == "__main__":
